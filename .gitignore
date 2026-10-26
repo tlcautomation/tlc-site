@@ -1,0 +1,14 @@
+﻿# Netlify local state (site link, deploy cache)
+.netlify/
+
+# Secrets
+.env
+.env.*
+
+# Dependencies (if ever added)
+node_modules/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store

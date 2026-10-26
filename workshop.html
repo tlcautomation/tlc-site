@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- REVIEW MODE: remove the next line before going public -->
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tlcautomation.org/workshop">
+<title>In the workshop – TLC Automation</title>
+<meta name="description" content="Products TLC Automation is building right now: Circuit, an interval timer app, and Throughline, a build-tracking web app for engineering teams.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="In the workshop – TLC Automation">
+<meta property="og:description" content="What I'm building right now, before it ships.">
+<meta property="og:image" content="https://tlcautomation.org/og-image.png">
+<meta property="og:url" content="https://tlcautomation.org/workshop">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Site shell: same variables, nav and footer as index.html */
+:root{
+  --green:#1F4D3F; --green-dark:#14332A; --ink:#14201B; --muted:#46534C; --soft:#5F6B64;
+  --line:#E3E8E4; --cream:#F4F1EA; --mint:#EEF3EF; --gold:#F2C14E; --white:#FFFFFF;
+  --display:'Bricolage Grotesque', system-ui, sans-serif; --body:'Public Sans', system-ui, sans-serif;
+  --radius:22px; --wrap:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--green)}a:hover{color:var(--green-dark)}
+h1,h2,h3{font-family:var(--display);letter-spacing:-0.025em;line-height:1.08;margin:0}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:24px;padding-right:24px}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:16px;padding:16px 26px;border-radius:999px;transition:transform .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{color:var(--ink)}
+
+.nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);z-index:10}
+.nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 28px;padding-top:14px;padding-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand-mark{width:38px;height:38px;border-radius:10px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.brand-name{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em}
+.nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:4px 24px;font-size:15px;font-weight:500}
+.nav-links a{color:var(--muted);text-decoration:none;padding:8px 0}
+.nav-links a:hover,.nav-links a[aria-current]{color:var(--ink)}
+.nav-links a[aria-current]{font-weight:700}
+.nav-links .nav-cta{background:var(--ink);color:var(--white);padding:10px 18px;border-radius:999px;font-weight:600}
+.nav-links .nav-cta:hover{color:var(--white);background:var(--green)}
+@media (max-width:760px){.nav-links a:not(.nav-cta){display:none}.nav .wrap{flex-wrap:nowrap;gap:12px}.brand-name{font-size:18px;white-space:nowrap}.nav-links .nav-cta{white-space:nowrap;padding:10px 14px;font-size:14px}}
+
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;font-size:14px;color:var(--soft)}
+footer a{color:var(--soft)}
+
+/* Page intro */
+.intro{padding-top:80px;padding-bottom:40px}
+.intro h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;line-height:1.02;letter-spacing:-.035em;max-width:16ch;margin-bottom:20px}
+.intro h1 em{font-style:normal;color:var(--green)}
+.intro .lead{font-size:1.15rem;color:var(--muted);max-width:60ch}
+.jump{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.jump a{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);background:var(--cream);border-radius:18px;padding:16px 18px;border:1.5px solid transparent;transition:border-color .15s}
+.jump a:hover{border-color:var(--green);color:var(--ink)}
+.jump .sw{width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center}
+.jump strong{display:block;font-family:var(--display);font-size:20px;letter-spacing:-.01em;line-height:1.2}
+.jump span.what{font-size:14.5px;color:var(--muted)}
+.jump .arrow{margin-left:auto;color:var(--green);font-weight:700}
+.status{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-left:8px;vertical-align:3px}
+.status.soon{background:#FBE3E5;color:#9E1F2B}
+.status.design{background:#E4ECFB;color:#22479E}
+
+.projects{display:grid;gap:40px;padding-bottom:40px}
+.project{scroll-margin-top:90px}
+
+/* ===== Circuit (pasted section, dark-mode blocks removed so it matches this light-only site) ===== */
+  .circuit-soon {
+    /* Colors come from the Circuit app: each timer phase has its own color. */
+    --cs-bg: #eef0ec;
+    --cs-surface: #ffffff;
+    --cs-ink: #262b31;
+    --cs-muted: #59616a;
+    --cs-line: #d3d7d1;
+    --cs-work: #e2414f;
+    --cs-rest: #22968a;
+    --cs-prep: #e3a12f;
+    --cs-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+    --cs-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--cs-bg);
+    color: var(--cs-ink);
+    font-family: var(--cs-body);
+    font-size: 17px;
+    line-height: 1.5;
+    border-radius: 20px;
+    padding: clamp(24px, 5vw, 56px);
+    display: grid;
+    gap: clamp(28px, 4vw, 44px);
+    box-sizing: border-box;
+  }
+  .circuit-soon *, .circuit-soon *::before, .circuit-soon *::after { box-sizing: border-box; }
+  .circuit-soon .cs-top { display: grid; gap: clamp(28px, 5vw, 56px); align-items: center; }
+  @media (min-width: 760px) { .circuit-soon .cs-top { grid-template-columns: minmax(0, 1fr) auto; } }
+  .circuit-soon .cs-copy { display: grid; gap: 14px; min-width: 0; }
+  .circuit-soon .cs-eyebrow {
+    margin: 0; display: inline-flex; align-items: center; gap: 10px; width: fit-content;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cs-muted);
+  }
+  .circuit-soon .cs-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cs-work); animation: cs-pulse 2s ease-in-out infinite; }
+  @keyframes cs-pulse { 50% { opacity: 0.35; } }
+  .circuit-soon .cs-name {
+    margin: 0; font-family: var(--cs-display); font-weight: 700; text-transform: uppercase;
+    font-size: clamp(3.4rem, 9vw, 5.6rem); line-height: 0.9; letter-spacing: 0.01em;
+  }
+  .circuit-soon .cs-tagline { margin: 0; font-family: var(--cs-display); font-weight: 600; font-size: clamp(1.35rem, 3vw, 1.7rem); line-height: 1.2; text-wrap: balance; }
+  .circuit-soon .cs-lede { margin: 0; color: var(--cs-muted); max-width: 52ch; }
+
+  /* A real workout drawn as the app's timeline: each block is one interval, sized by its length. */
+  .circuit-soon .cs-plan { display: grid; gap: 10px; margin-top: 8px; max-width: 520px; }
+  .circuit-soon .cs-plan-head { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; font-size: 0.95rem; }
+  .circuit-soon .cs-num { font-variant-numeric: tabular-nums; color: var(--cs-muted); font-weight: 500; }
+  .circuit-soon .cs-strip { position: relative; display: flex; gap: 2px; height: 16px; }
+  .circuit-soon .cs-strip i { border-radius: 3px; }
+  .circuit-soon .cs-strip .p { background: var(--cs-prep); }
+  .circuit-soon .cs-strip .w { background: var(--cs-work); }
+  .circuit-soon .cs-strip .r { background: var(--cs-rest); }
+  /* "You are here": 76 of 240 seconds in, matching the phone screen. */
+  .circuit-soon .cs-now { position: absolute; left: 31.7%; top: -5px; bottom: -5px; width: 3px; border-radius: 2px; background: var(--cs-ink); }
+  .circuit-soon .cs-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.88rem; color: var(--cs-muted); }
+  .circuit-soon .cs-legend li { display: inline-flex; align-items: center; gap: 7px; }
+  .circuit-soon .cs-legend b { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* Phone showing the player mid-interval. */
+  .circuit-soon .cs-phone {
+    justify-self: center; width: min(250px, 100%); padding: 10px; border-radius: 38px;
+    background: var(--cs-ink); box-shadow: 0 24px 48px -24px rgba(20, 24, 28, 0.55);
+  }
+  .circuit-soon .cs-screen {
+    border-radius: 30px; background: var(--cs-work); color: #ffffff;
+    aspect-ratio: 9 / 18; max-width: 100%; padding: 30px 22px 24px;
+    display: flex; flex-direction: column; text-align: center;
+  }
+  .circuit-soon .cs-phase { font-family: var(--cs-display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.85; }
+  .circuit-soon .cs-ex { font-family: var(--cs-display); font-weight: 600; font-size: 1.7rem; line-height: 1.1; margin-top: 4px; }
+  .circuit-soon .cs-clock { font-family: var(--cs-display); font-weight: 700; font-size: 5.4rem; line-height: 1; margin-top: auto; font-variant-numeric: tabular-nums; }
+  .circuit-soon .cs-round { font-size: 0.95rem; opacity: 0.85; }
+  .circuit-soon .cs-bar { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.28); margin: 18px 0 auto; overflow: hidden; }
+  .circuit-soon .cs-bar span { display: block; width: 30%; height: 100%; background: #ffffff; }
+  .circuit-soon .cs-next { display: flex; justify-content: space-between; gap: 8px; font-size: 0.9rem; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
+
+  .circuit-soon .cs-features { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  @media (min-width: 640px) { .circuit-soon .cs-features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .circuit-soon .cs-features li { background: var(--cs-surface); border: 1px solid var(--cs-line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 4px; align-content: start; }
+  .circuit-soon .cs-features h3 { margin: 0; font-family: var(--cs-display); font-weight: 600; font-size: 1.3rem; line-height: 1.2; }
+  .circuit-soon .cs-features p { margin: 0; color: var(--cs-muted); }
+  .circuit-soon .cs-foot { margin: 0; color: var(--cs-muted); font-size: 0.95rem; }
+  @media (prefers-reduced-motion: reduce) { .circuit-soon .cs-dot { animation: none; } }
+
+
+/* ===== Throughline ===== */
+.tl-soon{
+  --tl-bg:#eef0f2; --tl-panel:#ffffff; --tl-ink:#1b2129; --tl-muted:#4a5562; --tl-line:#d8dde3; --tl-line-soft:#e8ebef;
+  --tl-accent:#2f5fd0; --tl-ok:#2f8a57; --tl-warn:#b7791f; --tl-bad:#c2413b; --tl-idle:#8a95a3;
+  --tl-sans:"Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif; --tl-mono:Consolas, "Cascadia Mono", "SF Mono", Menlo, monospace;
+  background:var(--tl-bg); color:var(--tl-ink); font-family:var(--tl-sans); font-size:17px; line-height:1.5;
+  border-radius:20px; padding:clamp(24px,5vw,56px); display:grid; gap:clamp(28px,4vw,44px);
+}
+.tl-soon *{box-sizing:border-box}
+.tl-soon .tl-top{display:grid;gap:clamp(28px,5vw,48px);align-items:center}
+@media (min-width:900px){.tl-soon .tl-top{grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr)}}
+.tl-soon .tl-copy{display:grid;gap:14px;min-width:0}
+.tl-soon .tl-eyebrow{margin:0;display:inline-flex;align-items:center;gap:10px;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tl-muted)}
+.tl-soon .tl-dot{width:10px;height:10px;border-radius:2px;background:var(--tl-accent)}
+.tl-soon .tl-name{margin:0;display:flex;align-items:center;gap:14px;font-family:var(--tl-sans);font-weight:700;letter-spacing:-.02em;font-size:clamp(2.6rem,6.5vw,4rem);line-height:1}
+.tl-soon .tl-name svg{width:.8em;height:.8em;flex:none;color:var(--tl-accent)}
+.tl-soon .tl-tagline{margin:0;font-family:var(--tl-sans);font-weight:600;font-size:clamp(1.25rem,2.6vw,1.5rem);line-height:1.25;letter-spacing:-.01em;text-wrap:balance}
+.tl-soon .tl-lede{margin:0;color:var(--tl-muted);max-width:52ch}
+.tl-soon .tl-workname{font-size:.9rem;color:var(--tl-muted);margin:0}
+
+.tl-soon .tl-app{background:var(--tl-panel);border:1px solid var(--tl-line);border-radius:12px;box-shadow:0 24px 48px -28px rgba(20,30,45,.45);overflow:hidden;min-width:0}
+.tl-soon .tl-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--tl-line-soft);font-size:13px;color:var(--tl-muted);flex-wrap:wrap}
+.tl-soon .tl-bar b{font-family:var(--tl-mono);color:var(--tl-ink);font-weight:600}
+.tl-soon .tl-cp{margin-left:auto;font-size:12px;font-weight:600;color:var(--tl-warn);background:#fbf0dc;border:1px solid var(--tl-warn);border-radius:5px;padding:2px 8px}
+.tl-soon .tl-canvas{padding:12px 10px 4px;overflow-x:auto}
+.tl-soon .tl-canvas svg{display:block;width:100%;min-width:430px;height:auto}
+.tl-soon .tl-canvas text{font-family:var(--tl-sans)}
+.tl-soon .pn{font-family:var(--tl-mono);font-size:10.5px;fill:#7b8794}
+.tl-soon .nm{font-size:13px;font-weight:600;fill:var(--tl-ink)}
+.tl-soon .st{font-size:11px;font-weight:600}
+.tl-soon .tl-legend{list-style:none;margin:0;padding:8px 14px 12px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--tl-muted);border-top:1px solid var(--tl-line-soft)}
+.tl-soon .tl-legend li{display:inline-flex;align-items:center;gap:6px}
+.tl-soon .tl-legend b{width:10px;height:10px;border-radius:2px}
+.tl-soon .tl-legend .line{width:16px;height:3px;border-radius:2px}
+
+.tl-soon .tl-features{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+@media (min-width:640px){.tl-soon .tl-features{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tl-soon .tl-features li{background:var(--tl-panel);border:1px solid var(--tl-line);border-top:3px solid var(--tl-accent);border-radius:10px;padding:18px 20px;display:grid;gap:4px;align-content:start}
+.tl-soon .tl-features h3{margin:0;font-family:var(--tl-sans);font-weight:600;font-size:1.15rem;letter-spacing:-.01em;line-height:1.25}
+.tl-soon .tl-features p{margin:0;color:var(--tl-muted);font-size:.97rem}
+.tl-soon .tl-foot{margin:0;color:var(--tl-muted);font-size:.95rem}
+.tl-soon .tl-foot a{color:var(--tl-accent);font-weight:600}
+
+/* Closing CTA */
+.closer{margin:32px auto 96px;background:var(--ink);color:var(--white);border-radius:28px;padding:clamp(28px,5vw,52px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 40px}
+.closer h2{font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;margin-bottom:8px}
+.closer p{color:#C9D3CC;max-width:54ch}
+@media (max-width:640px){.intro{padding-top:48px}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="TLC Automation home"><span class="brand-mark"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><path d="M32.0 8.2 C36.6 8.2 41.3 15.2 45.7 19.3 C50.0 23.5 58.1 28.3 58.2 33.0 C58.4 37.7 51.0 43.7 46.6 47.6 C42.3 51.5 36.4 56.9 32.0 56.5 C27.6 56.0 24.4 48.6 20.3 44.7 C16.2 40.8 7.5 37.2 7.2 33.0 C6.8 28.8 14.2 23.5 18.3 19.3 C22.5 15.2 27.4 8.2 32.0 8.2Z" fill="none" stroke="#F2C14E" stroke-width="4"/><path d="M32.0 15.9 C35.1 15.9 38.4 20.7 41.4 23.6 C44.4 26.4 49.9 29.8 50.0 33.0 C50.2 36.2 45.1 40.4 42.1 43.1 C39.1 45.8 35.0 49.5 32.0 49.1 C29.0 48.8 26.8 43.8 23.9 41.1 C21.1 38.4 15.1 35.9 14.9 33.0 C14.7 30.1 19.7 26.4 22.6 23.6 C25.4 20.7 28.9 15.9 32.0 15.9Z" fill="#F4F1EA"/></svg></span><span class="brand-name"><b style="font-weight:800">TLC</b> <span style="font-weight:500">Automation</span></span></a>
+    <div class="nav-links">
+      <a href="/#what">What I do</a>
+      <a href="/#why">Why TLC</a>
+      <a href="/#how">How it works</a>
+      <a href="/workshop" aria-current="page">In the workshop</a>
+      <a href="/network">Network</a>
+      <a href="/#about">About</a>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap intro">
+  <p class="eyebrow">In the workshop</p>
+  <h1>What I'm building <em>right now.</em></h1>
+  <p class="lead">Products of my own, still in progress. They're built with the same tools and the same process I use for client work, so this is also a look at how I build.</p>
+  <ul class="jump">
+    <li><a href="#circuit">
+      <span class="sw" style="background:#e2414f"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/></svg></span>
+      <span><strong>Circuit <span class="status soon">Coming soon</span></strong><span class="what">Interval timer app for iPhone and Android</span></span>
+      <span class="arrow" aria-hidden="true">&darr;</span></a></li>
+    <li><a href="#throughline">
+      <span class="sw" style="background:#2f5fd0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.5 12h4m0 0V6.5c0-.8.7-1.5 1.5-1.5h3.5M11.5 12v5.5c0 .8.7 1.5 1.5 1.5h3.5"/></svg></span>
+      <span><strong>Throughline <span class="status design">In design</span></strong><span class="what">Build tracking for engineering teams</span></span>
+      <span class="arrow" aria-hidden="true">&darr;</span></a></li>
+  </ul>
+</header>
+
+<main class="wrap projects">
+
+<div id="circuit" class="project">
+<section class="circuit-soon" aria-labelledby="cs-title">
+  <div class="cs-top">
+    <div class="cs-copy">
+      <p class="cs-eyebrow"><span class="cs-dot" aria-hidden="true"></span>Coming soon to iPhone and Android</p>
+      <h2 id="cs-title" class="cs-name">Circuit</h2>
+      <p class="cs-tagline">An interval timer for circuits, Tabata, and strength sets.</p>
+      <p class="cs-lede">Build a workout once, then just listen. Circuit calls out each exercise, counts you down, and keeps the screen on, so your eyes can stay on your form.</p>
+      <div class="cs-plan">
+        <div class="cs-plan-head"><span>Classic burpee Tabata</span><span class="cs-num">4:00</span></div>
+        <div class="cs-strip" aria-hidden="true">
+          <i class="p" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i><i class="r" style="flex:10"></i>
+          <i class="w" style="flex:20"></i>
+          <span class="cs-now"></span>
+        </div>
+        <ul class="cs-legend">
+          <li><b style="background:var(--cs-prep)"></b>Get ready</li>
+          <li><b style="background:var(--cs-work)"></b>Work, 20 seconds</li>
+          <li><b style="background:var(--cs-rest)"></b>Rest, 10 seconds</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cs-phone" role="img" aria-label="The Circuit timer during a workout: burpees, 14 seconds left, round 3 of 8, rest next">
+      <div class="cs-screen">
+        <div class="cs-phase">Work</div>
+        <div class="cs-ex">Burpees</div>
+        <div class="cs-clock">0:14</div>
+        <div class="cs-round">Round 3 of 8</div>
+        <div class="cs-bar"><span></span></div>
+        <div class="cs-next"><span>Up next</span><strong>Rest 0:10</strong></div>
+      </div>
+    </div>
+  </div>
+  <ul class="cs-features">
+    <li><h3>Spoken cues</h3><p>Hear each exercise by name, the seconds left, and when to switch sides.</p></li>
+    <li><h3>Timed or rep-based</h3><p>Mix 20-second intervals with sets of 10 at a set weight, in the same workout.</p></li>
+    <li><h3>Knows when to go heavier</h3><p>Hit every set on target two sessions in a row, and Circuit suggests adding weight.</p></li>
+    <li><h3>Ready-made workouts</h3><p>Start with Tabata, the 7-minute workout, a sprint pyramid, and more. Then make them your own.</p></li>
+  </ul>
+  <p class="cs-foot">No account needed. Your workouts stay on your phone.</p>
+</section>
+
+</div>
+
+<div id="throughline" class="project">
+<section class="tl-soon" aria-labelledby="tl-title">
+  <div class="tl-top">
+    <div class="tl-copy">
+      <p class="tl-eyebrow"><span class="tl-dot" aria-hidden="true"></span>In design &middot; for engineering &amp; manufacturing teams</p>
+      <h2 id="tl-title" class="tl-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.5 12h4m0 0V6.5c0-.8.7-1.5 1.5-1.5h3.5M11.5 12v5.5c0 .8.7 1.5 1.5 1.5h3.5"/></svg>Throughline</h2>
+      <p class="tl-tagline">Every assembly in a build, and what's holding it up, on one screen.</p>
+      <p class="tl-lede">Break a product down into its subassemblies and see each one's kit, work order and work-plan steps in a single flow diagram. Throughline pulls in data from the systems you already use, so planners, engineers and technicians all look at the same picture.</p>
+      <p class="tl-workname">"Throughline" is a working name.</p>
+    </div>
+
+    <figure class="tl-app" style="margin:0" role="img" aria-label="Concept view of Throughline: a payload unit broken into four subassemblies. The RF front end is short two parts and sits on the critical path.">
+      <div class="tl-bar">Build <b>TLA-1000</b> &middot; S/N 0042 &middot; due 18 Dec <span class="tl-cp">Critical path</span></div>
+      <div class="tl-canvas">
+        <svg viewBox="0 0 470 280" aria-hidden="true">
+          <!-- edges -->
+          <path d="M170 140 C205 140 205 33 240 33" fill="none" stroke="#d8dde3" stroke-width="1.6"/>
+          <path d="M170 140 C205 140 205 177 240 177" fill="none" stroke="#d8dde3" stroke-width="1.6"/>
+          <path d="M170 140 C205 140 205 249 240 249" fill="none" stroke="#d8dde3" stroke-width="1.6"/>
+          <path d="M170 140 C205 140 205 105 240 105" fill="none" stroke="#b7791f" stroke-width="3"/>
+          <!-- root -->
+          <g transform="translate(4,108)">
+            <rect width="166" height="64" rx="6" fill="#fff" stroke="#b7791f" stroke-width="2.5"/>
+            <rect width="4" height="64" rx="2" fill="#2f5fd0"/>
+            <text class="pn" x="14" y="17">TLA-1000</text>
+            <text class="pn" x="156" y="17" text-anchor="end" style="fill:#b7791f;font-weight:700">&#8776;31d</text>
+            <text class="nm" x="14" y="35">Comms payload unit</text>
+            <text class="st" x="14" y="51" style="fill:#2f5fd0">In work &middot; 48%</text>
+            <rect x="14" y="56" width="140" height="3" rx="1.5" fill="#e8ebef"/><rect x="14" y="56" width="67" height="3" rx="1.5" fill="#2f5fd0"/>
+          </g>
+          <!-- children -->
+          <g transform="translate(240,6)">
+            <rect width="226" height="54" rx="6" fill="#fff" stroke="#d8dde3"/>
+            <rect width="4" height="54" rx="2" fill="#2f8a57"/>
+            <text class="pn" x="14" y="16">SA-1500</text>
+            <text class="nm" x="14" y="32">Chassis &amp; thermal</text>
+            <text class="st" x="14" y="46" style="fill:#2f8a57">Complete</text>
+            <text class="pn" x="216" y="46" text-anchor="end">100%</text>
+          </g>
+          <g transform="translate(240,78)">
+            <rect width="226" height="54" rx="6" fill="#fff" stroke="#b7791f" stroke-width="2.5"/>
+            <rect width="4" height="54" rx="2" fill="#c2413b"/>
+            <text class="pn" x="14" y="16">SA-1200</text>
+            <text class="pn" x="216" y="16" text-anchor="end" style="fill:#b7791f;font-weight:700">&#8776;29d</text>
+            <text class="nm" x="14" y="32">RF front end</text>
+            <text class="st" x="14" y="46" style="fill:#c2413b">Kit short &middot; 2 parts</text>
+            <text class="pn" x="216" y="46" text-anchor="end">0%</text>
+          </g>
+          <g transform="translate(240,150)">
+            <rect width="226" height="54" rx="6" fill="#fff" stroke="#d8dde3"/>
+            <rect width="4" height="54" rx="2" fill="#2f5fd0"/>
+            <text class="pn" x="14" y="16">SA-1100</text>
+            <text class="nm" x="14" y="32">Antenna panel</text>
+            <text class="st" x="14" y="46" style="fill:#2f5fd0">In work &middot; step 3 of 5</text>
+            <text class="pn" x="216" y="46" text-anchor="end">60%</text>
+          </g>
+          <g transform="translate(240,222)">
+            <rect width="226" height="54" rx="6" fill="#fff" stroke="#d8dde3"/>
+            <rect width="4" height="54" rx="2" fill="#c2413b"/>
+            <text class="pn" x="14" y="16">SA-1400</text>
+            <text class="nm" x="14" y="32">Power conditioning</text>
+            <text class="st" x="14" y="46" style="fill:#c2413b">On hold &middot; awaiting review</text>
+            <text class="pn" x="216" y="46" text-anchor="end">40%</text>
+          </g>
+        </svg>
+      </div>
+      <ul class="tl-legend">
+        <li><b style="background:#2f8a57"></b>Complete</li>
+        <li><b style="background:#2f5fd0"></b>In work</li>
+        <li><b style="background:#c2413b"></b>Short or on hold</li>
+        <li><span class="line" style="background:#b7791f"></span>Critical path: what sets the finish date</li>
+      </ul>
+    </figure>
+  </div>
+
+  <ul class="tl-features">
+    <li><h3>The whole build at a glance</h3><p>Switch between a flow diagram, an indented parts list and a status board. Click any assembly to see its kit, work order and steps.</p></li>
+    <li><h3>Know what's late, and why</h3><p>The critical path shows which shortage or hold is setting your finish date, so you know which problem to fix first.</p></li>
+    <li><h3>Trace any part or lot</h3><p>Search a lot number and see every unit it went into, including units that have already shipped.</p></li>
+    <li><h3>Works with your systems</h3><p>Designed to pull from ERP, PLM and supplier tools, starting with a simple spreadsheet import so nothing waits on IT.</p></li>
+  </ul>
+  <p class="tl-foot">The screen above is a concept with made-up sample data. Do you build hardware in-house? <a href="mailto:chris@tlcautomation.org?subject=Throughline">I'd like to hear how you track it.</a></p>
+</section>
+</div>
+
+</main>
+
+<div class="wrap">
+  <section class="closer">
+    <div>
+      <h2>Have something that needs building?</h2>
+      <p>The same approach works for your business: a small tool shaped around how you already work. The first conversation is free.</p>
+    </div>
+    <a class="btn btn-gold" href="/#contact">Book a free call</a>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span style="display:inline-flex;align-items:center;gap:10px"><span class="brand-mark" style="width:28px;height:28px;border-radius:8px"><svg width="19" height="19" viewBox="0 0 64 64" aria-hidden="true"><path d="M32.0 8.2 C36.6 8.2 41.3 15.2 45.7 19.3 C50.0 23.5 58.1 28.3 58.2 33.0 C58.4 37.7 51.0 43.7 46.6 47.6 C42.3 51.5 36.4 56.9 32.0 56.5 C27.6 56.0 24.4 48.6 20.3 44.7 C16.2 40.8 7.5 37.2 7.2 33.0 C6.8 28.8 14.2 23.5 18.3 19.3 C22.5 15.2 27.4 8.2 32.0 8.2Z" fill="none" stroke="#F2C14E" stroke-width="4"/><path d="M32.0 15.9 C35.1 15.9 38.4 20.7 41.4 23.6 C44.4 26.4 49.9 29.8 50.0 33.0 C50.2 36.2 45.1 40.4 42.1 43.1 C39.1 45.8 35.0 49.5 32.0 49.1 C29.0 48.8 26.8 43.8 23.9 41.1 C21.1 38.4 15.1 35.9 14.9 33.0 C14.7 30.1 19.7 26.4 22.6 23.6 C25.4 20.7 28.9 15.9 32.0 15.9Z" fill="#F4F1EA"/></svg></span>TLC Automation LLC · Boulder County, Colorado</span>
+    <span><a href="/workshop">In the workshop</a> · <a href="/network">Network</a> · <a href="mailto:chris@tlcautomation.org">chris@tlcautomation.org</a> · <a href="/privacy">Privacy</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>Mudslingers Members Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light}
+[hidden]{display:none!important}
+html,body{margin:0}
+img{max-width:100%}
+/* Layout: a top bar with a Member/Manager switch; member view is a phone-width app card, manager view is a wide summary page. */
+:root{
+  --ground:#ECEEEA;      /* porcelain stone */
+  --surface:#FFFFFF;
+  --surface-2:#F5F6F3;
+  --line:#D6DAD3;
+  --ink:#1F2421;
+  --muted:#58605A;
+  --celadon:#1D6B66;     /* primary: celadon glaze */
+  --celadon-ink:#FFFFFF;
+  --celadon-soft:#DDEDEA;
+  --iron:#A8461F;        /* accent: iron-red glaze */
+  --iron-soft:#F6E1D6;
+  --track:#E0E3DD;
+  --ok:#2C7A4B;
+  --display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,-apple-system,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#151917;--surface:#1E2421;--surface-2:#252C28;--line:#343C37;--ink:#E8ECE8;--muted:#A3ACA6;
+  --celadon:#5FB5AD;--celadon-ink:#0E1B19;--celadon-soft:#1F3532;--iron:#E08A63;--iron-soft:#3A2820;--track:#2E3631;--ok:#6CC08E;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#151917;--surface:#1E2421;--surface-2:#252C28;--line:#343C37;--ink:#E8ECE8;--muted:#A3ACA6;
+  --celadon:#5FB5AD;--celadon-ink:#0E1B19;--celadon-soft:#1F3532;--iron:#E08A63;--iron-soft:#3A2820;--track:#2E3631;--ok:#6CC08E;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--celadon);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+.top{max-width:1100px;margin:0 auto 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand h1{font-size:22px}
+.demo{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--iron)}
+.switch{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+.switch button{border:0;background:transparent;min-height:40px;padding:0 16px;border-radius:999px;font-weight:600;cursor:pointer;color:var(--muted)}
+.switch button[aria-pressed="true"]{background:var(--celadon);color:var(--celadon-ink)}
+
+/* member app */
+.app{max-width:400px;margin:0 auto;background:var(--ground);border:1px solid var(--line);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;min-height:760px;box-shadow:0 18px 40px -24px rgba(20,30,25,.35)}
+.screen{flex:1;padding:24px 18px 20px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.screen h2{font-size:28px}
+.sub{color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.k{font-size:13px;color:var(--muted)}
+.big{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.1}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.bar{height:12px;border-radius:6px;background:var(--track);overflow:hidden;display:flex}
+.bar span{display:block;height:100%;transition:width .35s ease}
+.status{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.label{font-size:13px;font-weight:600}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:15px;padding:0 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
+.btn.primary{background:var(--celadon);border-color:var(--celadon);color:var(--celadon-ink);justify-content:center}
+.chips{display:grid;gap:8px}
+.chip{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:6px 4px}
+.chip small{font-size:11px;font-weight:500;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--celadon);border-color:var(--celadon);color:var(--celadon-ink)}
+.chip[aria-pressed="true"] small{color:inherit}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600}
+.field input,.field select{height:46px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--surface);font-weight:400;font-size:15px}
+.err{color:var(--iron);font-size:13px;font-weight:500}
+.note{border-radius:var(--r);padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.note.good{background:var(--celadon-soft)}
+.note.warn{background:var(--iron-soft)}
+.list{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.list .row span:last-child{color:var(--muted)}
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper button{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:22px;font-weight:600;cursor:pointer}
+.stepper output{font-family:var(--display);font-size:24px;font-weight:700;min-width:32px;text-align:center}
+.green{color:var(--celadon);font-weight:600}
+.red{color:var(--iron);font-weight:600}
+
+nav.tabs{display:flex;justify-content:space-around;background:var(--surface);border-top:1px solid var(--line);padding:4px 6px 10px}
+nav.tabs button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:66px;min-height:52px;padding:8px 0 0;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer}
+nav.tabs button[aria-current="page"]{color:var(--celadon)}
+nav.tabs svg{width:22px;height:22px}
+
+/* manager */
+.mgr{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.mgr-head{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end}
+.mgr-head h2{font-size:30px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.tile .big{font-size:30px}
+.tablebox{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line)}
+th.n,td.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.you td{background:var(--celadon-soft)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--iron-soft);color:var(--iron)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions .btn{justify-content:center}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--ground);padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;max-width:calc(100% - 32px);box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+.foot{max-width:1100px;margin:22px auto 0;text-align:center;font-size:13px;color:var(--muted)}
+.foot button{border:0;background:none;color:var(--celadon);font-weight:600;cursor:pointer;text-decoration:underline;min-height:44px}
+@media (max-width:440px){.app{border-radius:20px;min-height:0}}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="demo">Demo · sample data</span>
+    <h1>Mudslingers Members Portal</h1>
+  </div>
+  <div class="switch" role="group" aria-label="Choose a view">
+    <button type="button" id="v-member" aria-pressed="true">Member view</button>
+    <button type="button" id="v-manager" aria-pressed="false">Manager view</button>
+  </div>
+</header>
+
+<main id="member">
+  <div class="app">
+    <div class="screen" id="screen" aria-live="polite"></div>
+    <nav class="tabs" aria-label="Portal sections">
+      <button type="button" data-tab="home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+      <button type="button" data-tab="guests"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M19 8v6M16 11h6"/></svg>Guests</button>
+      <button type="button" data-tab="kiln"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.5 1 2.5 2 2.5 0-3-.5-5 1-7z"/><path d="M5 21h14"/></svg>Kiln</button>
+      <button type="button" data-tab="volunteer"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Volunteer</button>
+    </nav>
+  </div>
+</main>
+
+<main id="manager" class="mgr" hidden></main>
+
+<p class="foot">A clickable demo by <a href="/" style="color:var(--celadon);font-weight:600">TLC Automation</a>. Nothing is saved or sent. <button type="button" id="reset">Reset demo</button></p>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var now=new Date();
+  var thisMonth=FULL[now.getMonth()], nextMonth=FULL[(now.getMonth()+1)%12];
+  function fmt(d){return DOW[d.getDay()]+', '+MONTHS[d.getMonth()]+' '+d.getDate();}
+  function daysAgo(n){var d=new Date(now);d.setDate(d.getDate()-n);return MONTHS[d.getMonth()]+' '+d.getDate();}
+
+  var SIZES=[{label:'¼ shelf',pct:15},{label:'½ shelf',pct:30},{label:'Full shelf',pct:60}];
+  var TASKS=['Studio cleanup','Glaze mixing','Kiln loading','Class assistant ($30 flat)'];
+  var SAMPLE=[
+    {name:'Member A',hours:'3',credit:30,guests:1,extraGuests:0,kiln:80},
+    {name:'Member B',hours:'2',credit:20,guests:2,extraGuests:1,kiln:55},
+    {name:'Member C',hours:'Class asst.',credit:30,guests:0,extraGuests:0,kiln:125},
+    {name:'Member D',hours:'0',credit:0,guests:3,extraGuests:2,kiln:30}
+  ];
+
+  function fresh(){return {
+    view:'member',tab:'home',
+    guests:[],dayPick:2,gName:'',gEmail:'',gErr:'',
+    kiln:40,kType:'Bisque',kSize:0,
+    firings:[{what:'Glaze · ¼ shelf',when:daysAgo(6)},{what:'Bisque · ½ shelf',when:daysAgo(15)}],
+    credit:20,hours:1,task:0,vlog:[{what:'Studio cleanup · 2 hrs',when:daysAgo(9)}],
+    approved:false
+  };}
+  var S=fresh();
+
+  var $=function(id){return document.getElementById(id);};
+  var screen=$('screen');
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+  var toastTimer;
+  function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},2600);}
+
+  function freeLeft(){return S.guests.length>=1?0:1;}
+  function extraGuestCharge(){return Math.max(0,S.guests.length-1)*20;}
+  function kilnOver(){return Math.max(0,S.kiln-100);}
+  function days(){var out=[];for(var i=1;i<=8;i++){var d=new Date(now);d.setDate(d.getDate()+i);out.push(d);}return out;}
+
+  function kilnBar(extra){
+    var used=Math.min(S.kiln,100), add=Math.max(0,Math.min(extra||0,100-used));
+    var over=(S.kiln+(extra||0))>100;
+    return '<div class="bar" aria-hidden="true"><span style="width:'+used+'%;background:var(--iron)"></span><span style="width:'+add+'%;background:'+(over?'var(--ink)':'var(--iron-soft)')+'"></span></div>';
+  }
+
+  function home(){
+    var adj=-S.credit+extraGuestCharge();
+    return ''+
+    '<div><div class="eyebrow">Mudslingers Members</div><h2>Hi, Sam</h2>'+
+    '<div class="status"><span class="dot"></span>Active member · renews '+MONTHS[(now.getMonth()+1)%12]+' 1</div></div>'+
+    '<div class="label" style="color:var(--muted)">'+thisMonth+'</div>'+
+    '<div class="grid2">'+
+      '<div class="card"><div class="k">Free guest</div><div class="big num">'+(freeLeft()?'1 left':'Used')+'</div><div class="k">Extras $20 each</div></div>'+
+      '<div class="card"><div class="k">Volunteer credit</div><div class="big num green">$'+S.credit+'</div><div class="k">of $30 max</div></div>'+
+    '</div>'+
+    '<div class="card"><div class="row"><span class="k">Kiln allowance (⅓ load)</span><strong class="num'+(S.kiln>100?' red':'')+'">'+S.kiln+'% used</strong></div>'+kilnBar(0)+
+      '<div class="k">'+(S.kiln>100?'You’re '+kilnOver()+'% over. Extra firing is billed at the studio rate.':'Extra firing is billed at the studio rate once you go over.')+'</div></div>'+
+    '<div class="card"><div class="label">'+nextMonth+' dues adjustments</div>'+
+      '<div class="row"><span>Volunteer credit</span><span class="green num">−$'+S.credit+'</span></div>'+
+      '<div class="row"><span>Extra guests</span><span class="num">'+(extraGuestCharge()?'+$'+extraGuestCharge():'$0')+'</span></div>'+
+      '<div class="row"><span>Extra firing</span><span class="num">'+(kilnOver()?'<span class="red">studio rate × '+kilnOver()+'%</span>':'$0')+'</span></div>'+
+      '<div class="row" style="border-top:1px solid var(--line);padding-top:8px;font-weight:700"><span>Change to dues</span><span class="num">'+(adj<0?'−$'+(-adj):'+$'+adj)+(kilnOver()?' + firing':'')+'</span></div></div>'+
+    '<button type="button" class="btn primary" data-go="guests">Book a guest</button>'+
+    '<div class="grid2"><button type="button" class="btn" data-go="kiln">Log a firing <span aria-hidden="true">→</span></button><button type="button" class="btn" data-go="volunteer">Log hours <span aria-hidden="true">→</span></button></div>'+
+    '<div class="label" style="color:var(--muted)">For members</div>'+
+    '<div class="card list"><div class="row"><span>Pottery II · Mondays</span><span class="green" style="color:var(--celadon)">50% off, applied for you</span></div><div class="row"><span>Member meeting</span><span>Date TBD</span></div></div>';
+  }
+
+  function guests(){
+    var ds=days(), chips='';
+    ds.forEach(function(d,i){chips+='<button type="button" class="chip" data-day="'+i+'" aria-pressed="'+(S.dayPick===i)+'"><small>'+DOW[d.getDay()]+'</small><span class="num">'+d.getDate()+'</span></button>';});
+    var free=freeLeft();
+    var list=S.guests.length?S.guests.map(function(g){return '<div class="row"><span>'+esc(g.name)+' · '+g.when+'</span><span>'+(g.free?'Free':'+$20')+'</span></div>';}).join(''):'<div class="k">No guest visits booked yet.</div>';
+    return ''+
+    '<div><h2>Bring a guest</h2><div class="sub">Pick the day they’re actually coming. No codes needed.</div></div>'+
+    (free?'<div class="note good"><span class="green">✓</span><span><strong>1 free guest</strong> left in '+thisMonth+'. Extras are $20, added to your dues.</span></div>'
+         :'<div class="note warn"><span class="red">$</span><span>You’ve used your free guest for '+thisMonth+'. This one adds <strong>$20</strong> to '+nextMonth+' dues.</span></div>')+
+    '<div class="label">Which day?</div><div class="chips" style="grid-template-columns:repeat(4,minmax(0,1fr))">'+chips+'</div>'+
+    '<label class="field" for="gname">Guest’s name<input id="gname" type="text" autocomplete="off" placeholder="First and last name" value="'+esc(S.gName)+'"></label>'+
+    '<label class="field" for="gemail">Guest’s email<input id="gemail" type="email" autocomplete="off" placeholder="So we can send the studio waiver" value="'+esc(S.gEmail)+'"></label>'+
+    (S.gErr?'<div class="err" role="alert">'+S.gErr+'</div>':'')+
+    '<div class="card"><div class="row"><span>Visit</span><strong>'+fmt(ds[S.dayPick])+'</strong></div><div class="row"><span>Cost</span><strong class="'+(free?'green':'red')+'">'+(free?'Free (this month’s guest)':'$20')+'</strong></div><div class="row"><span class="k">Guest firing</span><span class="k">Included</span></div></div>'+
+    '<button type="button" class="btn primary" id="bookGuest">Book guest visit</button>'+
+    '<div class="label" style="color:var(--muted)">Your guest visits</div><div class="card list">'+list+'</div>';
+  }
+
+  function kiln(){
+    var add=SIZES[S.kSize].pct, after=S.kiln+add;
+    var types=['Bisque','Glaze'].map(function(t){return '<button type="button" class="chip" data-ktype="'+t+'" aria-pressed="'+(S.kType===t)+'">'+t+'</button>';}).join('');
+    var sizes=SIZES.map(function(s,i){return '<button type="button" class="chip" data-ksize="'+i+'" aria-pressed="'+(S.kSize===i)+'">'+s.label+'</button>';}).join('');
+    var list=S.firings.map(function(f){return '<div class="row"><span>'+f.what+'</span><span>'+f.when+'</span></div>';}).join('');
+    return ''+
+    '<div><h2>Kiln log</h2><div class="sub">Your allowance is ½ shelf a week or ⅓ load a month.</div></div>'+
+    '<div class="card"><div class="row"><span class="k">'+thisMonth+' so far</span><strong class="num">'+S.kiln+'% → '+after+'%</strong></div>'+kilnBar(add)+
+      '<div class="k">'+(after>100?'<span class="red">This puts you '+(after-100)+'% over.</span> The extra is billed at the studio rate.':'Still inside your included firing. No extra charge.')+'</div></div>'+
+    '<div class="label">What are you firing?</div><div class="chips" style="grid-template-columns:repeat(2,minmax(0,1fr))">'+types+'</div>'+
+    '<div class="label">How much space?</div><div class="chips" style="grid-template-columns:repeat(3,minmax(0,1fr))">'+sizes+'</div>'+
+    '<button type="button" class="btn primary" id="logFiring">Add to kiln log</button>'+
+    '<div class="label" style="color:var(--muted)">Recent firings</div><div class="card list">'+list+'</div>';
+  }
+
+  function volunteer(){
+    var assistant=S.task===3;
+    var gain=assistant?30:S.hours*10;
+    var after=Math.min(30,S.credit+gain), real=after-S.credit;
+    var opts=TASKS.map(function(t,i){return '<option value="'+i+'"'+(S.task===i?' selected':'')+'>'+t+'</option>';}).join('');
+    var list=S.vlog.map(function(v){return '<div class="row"><span>'+v.what+'</span><span>'+v.when+'</span></div>';}).join('');
+    var msg=real<=0?(S.credit>=30?'You’ve already hit this month’s $30 max. Thank you!':'Pick how many hours you worked.')
+      :'Adds <strong class="green">$'+real+'</strong> to your credit'+(after===30?', which reaches the $30 max.':'.');
+    return ''+
+    '<div><h2>Volunteer</h2><div class="sub">$10 an hour off your dues, up to $30 a month. Class assistants get $30.</div></div>'+
+    '<div class="card"><div class="row"><span class="k">'+thisMonth+' credit</span><strong class="big num green" style="font-size:22px">$'+S.credit+' of $30</strong></div>'+
+      '<div class="bar" aria-hidden="true"><span style="width:'+Math.round(S.credit/30*100)+'%;background:var(--celadon)"></span></div>'+
+      '<div class="k">Comes off '+nextMonth+' dues automatically. No sign-off sheet.</div></div>'+
+    '<div class="card" style="gap:14px">'+
+      '<label class="field" for="task">What did you do?<select id="task">'+opts+'</select></label>'+
+      (assistant?'':'<div class="row" style="align-items:center"><span class="label">Hours</span><div class="stepper"><button type="button" id="hDec" aria-label="Fewer hours">−</button><output class="num" id="hOut">'+S.hours+'</output><button type="button" id="hInc" aria-label="More hours">+</button></div></div>')+
+      '<div class="k">'+msg+'</div>'+
+      '<button type="button" class="btn primary" id="logHours"'+(real<=0?' disabled style="opacity:.55;cursor:not-allowed"':'')+'>Submit hours</button>'+
+    '</div>'+
+    '<div class="label" style="color:var(--muted)">Logged this month</div><div class="card list">'+list+'</div>';
+  }
+
+  function manager(){
+    var you={name:'Sam (you, live)',hours:S.vlog.length+' entries',credit:S.credit,guests:S.guests.length,extraGuests:Math.max(0,S.guests.length-1),kiln:S.kiln,you:true};
+    var rows=SAMPLE.concat([you]);
+    var totCredit=0,totGuest=0,overCount=0;
+    var body=rows.map(function(r){
+      totCredit+=r.credit;totGuest+=r.extraGuests*20;if(r.kiln>100)overCount++;
+      var adj=-r.credit+r.extraGuests*20;
+      var adjTxt=(adj<0?'−$'+(-adj):(adj>0?'+$'+adj:'$0'))+(r.kiln>100?' + firing':'');
+      return '<tr'+(r.you?' class="you"':'')+'><td>'+r.name+'</td><td class="n">'+r.hours+'</td><td class="n">'+(r.credit?'−$'+r.credit:'$0')+'</td><td class="n">'+r.guests+(r.extraGuests?' (+$'+r.extraGuests*20+')':r.guests?' (free)':'')+'</td><td class="n'+(r.kiln>100?' red':'')+'">'+r.kiln+'%</td><td class="n"><strong>'+adjTxt+'</strong></td></tr>';
+    }).join('');
+    var flags=[];
+    rows.forEach(function(r){if(r.kiln>100)flags.push(r.name+' is '+(r.kiln-100)+'% over their kiln allowance.');});
+    flags.push('Glaze mixing shift on Saturday has no volunteer yet.');
+    return ''+
+    '<div class="mgr-head"><div><div class="eyebrow">'+thisMonth+' · <span class="pill">Sample members</span></div><h2>Dues adjustments, ready to bill</h2></div>'+
+      '<div class="actions"><button type="button" class="btn" id="csv">Download CSV</button><button type="button" class="btn primary" id="approve">'+(S.approved?'Sent to billing ✓':'Approve &amp; send to billing')+'</button></div></div>'+
+    '<div class="tiles">'+
+      '<div class="card tile"><div class="k">Volunteer credit given</div><div class="big num green">−$'+totCredit+'</div></div>'+
+      '<div class="card tile"><div class="k">Extra guests billed</div><div class="big num">+$'+totGuest+'</div></div>'+
+      '<div class="card tile"><div class="k">Members over kiln allowance</div><div class="big num'+(overCount?' red':'')+'">'+overCount+'</div></div>'+
+      '<div class="card tile"><div class="k">Time spent tallying</div><div class="big">None</div></div>'+
+    '</div>'+
+    '<div class="card" style="padding:0"><div style="padding:16px 18px 4px" class="row"><strong>By member</strong><span class="k">The highlighted row updates as you use the member view.</span></div>'+
+      '<div class="tablebox" style="padding:0 8px 8px"><table><thead><tr><th>Member</th><th class="n">Volunteer</th><th class="n">Credit</th><th class="n">Guests</th><th class="n">Kiln used</th><th class="n">Adjustment</th></tr></thead><tbody>'+body+'</tbody></table></div></div>'+
+    '<div class="two">'+
+      '<div class="card"><strong>Needs a look</strong>'+flags.map(function(f){return '<div class="note warn" style="padding:8px 12px">'+esc(f)+'</div>';}).join('')+'</div>'+
+      '<div class="card"><strong>Membership waitlist</strong><div class="k">When a spot opens, one click invites the next person in line and sends them the membership agreement.</div><button type="button" class="btn" id="invite">Invite next person <span aria-hidden="true">→</span></button></div>'+
+    '</div>';
+  }
+
+  var VIEWS={home:home,guests:guests,kiln:kiln,volunteer:volunteer};
+  function render(){
+    $('member').hidden=S.view!=='member';
+    $('manager').hidden=S.view!=='manager';
+    $('v-member').setAttribute('aria-pressed',S.view==='member');
+    $('v-manager').setAttribute('aria-pressed',S.view==='manager');
+    if(S.view==='member'){
+      screen.innerHTML=VIEWS[S.tab]();
+      document.querySelectorAll('nav.tabs button').forEach(function(b){if(b.dataset.tab===S.tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+    } else {
+      $('manager').innerHTML=manager();
+    }
+  }
+  function go(tab){S.tab=tab;render();screen.scrollTop=0;try{$('member').scrollIntoView({block:'start'});}catch(e){}}
+
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.tab);});});
+  $('v-member').addEventListener('click',function(){S.view='member';render();});
+  $('v-manager').addEventListener('click',function(){S.view='manager';render();});
+  $('reset').addEventListener('click',function(){var v=S.view;S=fresh();S.view=v;render();toast('Demo reset');});
+
+  screen.addEventListener('input',function(e){
+    if(e.target.id==='gname')S.gName=e.target.value;
+    if(e.target.id==='gemail')S.gEmail=e.target.value;
+  });
+  screen.addEventListener('change',function(e){
+    if(e.target.id==='task'){S.task=+e.target.value;render();}
+  });
+  screen.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.dataset.go){go(t.dataset.go);return;}
+    if(t.dataset.day!=null){S.dayPick=+t.dataset.day;render();return;}
+    if(t.dataset.ktype){S.kType=t.dataset.ktype;render();return;}
+    if(t.dataset.ksize!=null){S.kSize=+t.dataset.ksize;render();return;}
+    if(t.id==='bookGuest'){
+      if(!S.gName.trim()){S.gErr='Add your guest’s name so the studio knows who’s coming.';render();var n=$('gname');if(n)n.focus();return;}
+      var d=days()[S.dayPick], free=freeLeft()===1;
+      S.guests.push({name:S.gName.trim(),when:fmt(d),free:free});
+      S.gName='';S.gEmail='';S.gErr='';render();
+      toast(free?'Guest booked for '+fmt(d)+'. Free this month.':'Guest booked for '+fmt(d)+'. $20 added to dues.');return;
+    }
+    if(t.id==='logFiring'){
+      var s=SIZES[S.kSize];S.kiln+=s.pct;S.firings.unshift({what:S.kType+' · '+s.label,when:'Today'});render();
+      toast(S.kiln>100?'Logged. You’re now '+(S.kiln-100)+'% over your allowance.':'Logged. '+S.kiln+'% of your allowance used.');return;
+    }
+    if(t.id==='hInc'){S.hours=Math.min(8,S.hours+1);render();return;}
+    if(t.id==='hDec'){S.hours=Math.max(0,S.hours-1);render();return;}
+    if(t.id==='logHours'){
+      var assistant=S.task===3, gain=assistant?30:S.hours*10, before=S.credit;
+      S.credit=Math.min(30,S.credit+gain);
+      S.vlog.unshift({what:assistant?'Class assistant':TASKS[S.task]+' · '+S.hours+' hr'+(S.hours===1?'':'s'),when:'Today'});
+      render();toast('Hours logged. $'+(S.credit-before)+' off '+nextMonth+' dues.');return;
+    }
+  });
+  $('manager').addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.id==='approve'){S.approved=true;render();toast('Sent to billing (demo only, nothing was sent)');}
+    if(t.id==='csv'){toast('In the real portal this downloads a spreadsheet');}
+    if(t.id==='invite'){toast('In the real portal this emails the next person on the waitlist');}
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
