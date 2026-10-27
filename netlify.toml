@@ -1,0 +1,4 @@
+﻿# Netlify settings for tlcautomation.org
+# Plain static site: no build step, publish the repo root.
+[build]
+  publish = "."
