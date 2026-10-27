@@ -10,3 +10,7 @@ Static website for TLC Automation LLC, hosted on Netlify.
 No build step. Netlify publishes the repo root as-is. Every push to `main` deploys to production.
 
 Source: github.com/tlcautomation/tlc-site. Deploys are triggered by Netlify's GitHub app.
+
+## License
+
+© 2026 TLC Automation LLC. All rights reserved. This code is public for transparency only. No permission is granted to copy, modify, or reuse it.
